@@ -5,12 +5,11 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 async function main() {
-
   const openai = createOpenAI({
-    baseURL: "https://openai.azure.com",
+    baseURL: 'https://openai.azure.com',
     models: {
-      "gpt-4-azure": 8_192,
-    }
+      'gpt-4-azure': 8_192,
+    },
   });
   const result = await experimental_generateText({
     model: openai('gpt-4-azure'),

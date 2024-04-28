@@ -17,7 +17,11 @@ import {
 import { z } from 'zod';
 import { convertToOpenAIChatMessages } from './convert-to-openai-chat-messages';
 import { mapOpenAIFinishReason } from './map-openai-finish-reason';
-import { OpenAIChatModelId, OpenAIChatSettings, openAiChatModelTokens } from './openai-chat-settings';
+import {
+  OpenAIChatModelId,
+  OpenAIChatSettings,
+  openAiChatModelTokens,
+} from './openai-chat-settings';
 import { openaiFailedResponseHandler } from './openai-error';
 import { mapOpenAIChatLogProbsOutput } from './map-openai-chat-logprobs';
 import { CustomModel } from './openai-provider';
@@ -28,13 +32,15 @@ type OpenAIChatConfig = {
   headers: () => Record<string, string | undefined>;
 };
 
-export class OpenAIChatLanguageModel<CustomChatModelId extends string> implements LanguageModelV1 {
+export class OpenAIChatLanguageModel<CustomChatModelId extends string>
+  implements LanguageModelV1
+{
   readonly specificationVersion = 'v1';
   readonly defaultObjectGenerationMode = 'tool';
 
   readonly modelId: OpenAIChatModelId | CustomChatModelId;
   readonly settings: OpenAIChatSettings;
-  readonly maxTokens: number | undefined;
+  readonly contextWindowSize: number;
 
   private readonly config: OpenAIChatConfig;
 
@@ -42,12 +48,14 @@ export class OpenAIChatLanguageModel<CustomChatModelId extends string> implement
     modelId: OpenAIChatModelId | CustomChatModelId,
     settings: OpenAIChatSettings,
     config: OpenAIChatConfig,
-    maxTokens?: number,
+    customModels: CustomModel<CustomChatModelId>,
   ) {
-    this.modelId = modelId
+    this.modelId = modelId;
     this.settings = settings;
     this.config = config;
-    this.maxTokens = maxTokens ?? openAiChatModelTokens[modelId]
+    this.contextWindowSize =
+      customModels[modelId as CustomChatModelId] ??
+      openAiChatModelTokens[modelId as OpenAIChatModelId];
   }
 
   get provider(): string {

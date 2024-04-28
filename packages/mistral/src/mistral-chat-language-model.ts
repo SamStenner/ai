@@ -34,7 +34,7 @@ export class MistralChatLanguageModel implements LanguageModelV1 {
 
   readonly modelId: MistralChatModelId;
   readonly settings: MistralChatSettings;
-  readonly maxTokens: number | undefined
+  readonly contextWindowSize: number;
 
   private readonly config: MistralChatConfig;
 
@@ -46,7 +46,7 @@ export class MistralChatLanguageModel implements LanguageModelV1 {
     this.modelId = modelId;
     this.settings = settings;
     this.config = config;
-    this.maxTokens = mistralChatModelTokens[modelId];
+    this.contextWindowSize = mistralChatModelTokens[modelId];
   }
 
   get provider(): string {

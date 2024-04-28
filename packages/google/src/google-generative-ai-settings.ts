@@ -2,8 +2,7 @@
 export type GoogleGenerativeAIModelId =
   | 'models/gemini-1.5-pro-latest'
   | 'models/gemini-pro'
-  | 'models/gemini-pro-vision'
-  | (string & {});
+  | 'models/gemini-pro-vision';
 
 export interface GoogleGenerativeAISettings {
   /**
@@ -19,8 +18,11 @@ Models running with nucleus sampling don't allow topK setting.
 /**
  * Tokens allowed for each model.
  */
-export const googleGenerativeAIModelTokens: Record<GoogleGenerativeAIModelId, number | undefined> = {
-  'models/gemini-1.5-pro-latest': 4096,
-  'models/gemini-pro': 4096,
-  'models/gemini-pro-vision': 4096,
+export const googleGenerativeAIModelTokens: Record<
+  GoogleGenerativeAIModelId,
+  number
+> = {
+  'models/gemini-1.5-pro-latest': 1_048_576,
+  'models/gemini-pro': 30_720,
+  'models/gemini-pro-vision': 12_288,
 };

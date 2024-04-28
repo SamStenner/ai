@@ -48,6 +48,9 @@ monitor and detect abuse. Learn more.
   user?: string;
 }
 
-export const openAiCompletionModelTokens: Record<OpenAICompletionModelId, number | undefined> = {
+export const openAiCompletionModelTokens: Record<
+  OpenAICompletionModelId,
+  number
+> = {
   'gpt-3.5-turbo-instruct': 4096,
-}
+};

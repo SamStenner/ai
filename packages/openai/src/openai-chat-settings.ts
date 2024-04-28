@@ -16,39 +16,7 @@ export type OpenAIChatModelId =
   | 'gpt-3.5-turbo-1106'
   | 'gpt-3.5-turbo-16k'
   | 'gpt-3.5-turbo-0613'
-  | 'gpt-3.5-turbo-16k-0613'
-  
-
-  // type CustomModel<T> = Record<keyof T, number>
-  
-  // class OpenAI<T = unknown> {
-  //   private readonly customModelIds: CustomModel<T>;
-  
-  //   constructor(customModelIds: CustomModel<T> = {} as CustomModel<T>) {
-  //     this.customModelIds = customModelIds;
-  //   }
-  
-  //   chat(model: OpenAIChatModelId | (keyof typeof this.customModelIds)) {
-      
-  //   }
-  // }
-
-  // const customIds = {
-  //   "gpt-4-turbo-ft-29-04-2024-discrim-v1": 200,
-  //   "gpt-4-turbo-ft-30-04-2024-discrim-v2": 200,
-  //   "gpt-4-turbo-ft-31-04-2024-discrim-v3": 200,
-  //  }
-  
-  // // Create an instance of OpenAI with your custom model IDs
-  // const openai = new OpenAI();
-  // openai.chat("gpt-3.5-turbo-16k")
-  
-  // // Now you can use both default and custom model IDs with IntelliSense suggestions
-  // openai.chat("gpt-4-turbo-ft-30-04-2024-discrim-v2"); // Valid default model ID
-  // openai.chat("gpt-4-turbo-ft-29-04-2024-discrim-v1"); // Valid custom model ID
-  // openai.chat("gpt-4-turbo-ft-30-04-2024-discrim-v2"); // Valid custom model ID
-  // openai.chat("invalid-model-id"); // TypeScript error: Argument of type '"invalid-model-id"' is not assignable to parameter of type 'DefaultModelId | "gpt-4-turbo-ft-29-04-2024-discrim-v1" | "gpt-4-turbo-ft-30-04-2024-discrim-v2"'.
-
+  | 'gpt-3.5-turbo-16k-0613';
 
 export interface OpenAIChatSettings {
   /**
@@ -87,21 +55,21 @@ monitor and detect abuse. Learn more.
   user?: string;
 }
 
-export const openAiChatModelTokens: Record<OpenAIChatModelId, number | undefined> = {
-  "gpt-4-turbo": 128_000,
-  "gpt-4-turbo-2024-04-09": 128_000,
-  "gpt-4-turbo-preview": 128_000,
-  "gpt-4-0125-preview": 128_000,
-  "gpt-4-1106-preview": 128_000,
-  "gpt-4-vision-preview": 128_000,
-  "gpt-4": 8192,
-  "gpt-4-0613": 8192,
-  "gpt-4-32k": 32_768,
-  "gpt-4-32k-0613": 32_768,
-  "gpt-3.5-turbo-0125": 16_385,
-  "gpt-3.5-turbo": 16_385,
-  "gpt-3.5-turbo-1106": 16_385,
-  "gpt-3.5-turbo-16k": 16_385,
-  "gpt-3.5-turbo-0613": 4096,
-  "gpt-3.5-turbo-16k-0613": 16_385,
-}
+export const openAiChatModelTokens: Record<OpenAIChatModelId, number> = {
+  'gpt-4-turbo': 128_000,
+  'gpt-4-turbo-2024-04-09': 128_000,
+  'gpt-4-turbo-preview': 128_000,
+  'gpt-4-0125-preview': 128_000,
+  'gpt-4-1106-preview': 128_000,
+  'gpt-4-vision-preview': 128_000,
+  'gpt-4': 8192,
+  'gpt-4-0613': 8192,
+  'gpt-4-32k': 32_768,
+  'gpt-4-32k-0613': 32_768,
+  'gpt-3.5-turbo-0125': 16_385,
+  'gpt-3.5-turbo': 16_385,
+  'gpt-3.5-turbo-1106': 16_385,
+  'gpt-3.5-turbo-16k': 16_385,
+  'gpt-3.5-turbo-0613': 4096,
+  'gpt-3.5-turbo-16k-0613': 16_385,
+};

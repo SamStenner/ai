@@ -31,7 +31,7 @@ export type LanguageModelV1 = {
   /**
    * Maximum number of tokens that can fit into the context window.
    */
-  readonly maxTokens: number | undefined;
+  readonly contextWindowSize: number;
 
   /**
    * Default object generation mode that should be used with this model when

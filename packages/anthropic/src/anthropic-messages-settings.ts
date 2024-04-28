@@ -2,8 +2,7 @@
 export type AnthropicMessagesModelId =
   | 'claude-3-opus-20240229'
   | 'claude-3-sonnet-20240229'
-  | 'claude-3-haiku-20240307'
-  | (string & {});
+  | 'claude-3-haiku-20240307';
 
 export interface AnthropicMessagesSettings {
   /**
@@ -15,8 +14,11 @@ Recommended for advanced use cases only. You usually only need to use temperatur
   topK?: number;
 }
 
-export const anthropicMessagesModelTokens: Record<AnthropicMessagesModelId, number | undefined> = {
-  'claude-3-opus-20240229': 4096,
-  'claude-3-sonnet-20240229': 4096,
-  'claude-3-haiku-20240307': 4096,
-}
+export const anthropicMessagesModelTokens: Record<
+  AnthropicMessagesModelId,
+  number
+> = {
+  'claude-3-opus-20240229': 200_000,
+  'claude-3-sonnet-20240229': 200_000,
+  'claude-3-haiku-20240307': 200_000,
+};

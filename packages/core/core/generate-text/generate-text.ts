@@ -81,7 +81,11 @@ The tools that the model can call. The model needs to support calling tools.
   const retry = retryWithExponentialBackoff({ maxRetries });
   let validatedPrompt = getValidatedPrompt({ system, prompt, messages });
   if (contextHandler) {
-    validatedPrompt = await getSizedPrompt(validatedPrompt, contextHandler, model.maxTokens);
+    validatedPrompt = await getSizedPrompt(
+      validatedPrompt,
+      contextHandler,
+      model.contextWindowSize,
+    );
   }
   const modelResponse = await retry(() => {
     return model.doGenerate({

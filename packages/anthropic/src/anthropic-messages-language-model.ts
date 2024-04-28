@@ -34,7 +34,7 @@ export class AnthropicMessagesLanguageModel implements LanguageModelV1 {
 
   readonly modelId: AnthropicMessagesModelId;
   readonly settings: AnthropicMessagesSettings;
-  readonly maxTokens: number | undefined;
+  readonly contextWindowSize: number;
 
   private readonly config: AnthropicMessagesConfig;
 
@@ -46,7 +46,7 @@ export class AnthropicMessagesLanguageModel implements LanguageModelV1 {
     this.modelId = modelId;
     this.settings = settings;
     this.config = config;
-    this.maxTokens = anthropicMessagesModelTokens[modelId];
+    this.contextWindowSize = anthropicMessagesModelTokens[modelId];
   }
 
   get provider(): string {

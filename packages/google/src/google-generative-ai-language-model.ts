@@ -35,7 +35,7 @@ export class GoogleGenerativeAILanguageModel implements LanguageModelV1 {
 
   readonly modelId: GoogleGenerativeAIModelId;
   readonly settings: GoogleGenerativeAISettings;
-  readonly maxTokens: number | undefined;
+  readonly contextWindowSize: number;
 
   private readonly config: GoogleGenerativeAIConfig;
 
@@ -47,7 +47,7 @@ export class GoogleGenerativeAILanguageModel implements LanguageModelV1 {
     this.modelId = modelId;
     this.settings = settings;
     this.config = config;
-    this.maxTokens = googleGenerativeAIModelTokens[modelId];
+    this.contextWindowSize = googleGenerativeAIModelTokens[modelId];
   }
 
   get provider(): string {

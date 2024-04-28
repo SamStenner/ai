@@ -9,7 +9,6 @@ async function main() {
     model: openai('gpt-3.5-turbo-instruct'),
     maxTokens: 1024,
     system: 'You are a helpful chatbot.',
-    tokenize: text => text.slice(0, Math.floor(text.length * 0.75)),
     messages: [
       {
         role: 'user',

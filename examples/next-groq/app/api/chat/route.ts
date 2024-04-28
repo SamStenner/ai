@@ -7,8 +7,8 @@ const groq = createOpenAI({
   apiKey: process.env.GROQ_API_KEY ?? '',
   baseURL: 'https://api.groq.com/openai/v1',
   models: {
-    'llama3-70b-8192': 100,
-  }
+    'llama3-70b-8192': 8_192,
+  },
 });
 
 export async function POST(req: Request) {
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 
   // Call the language model
   const result = await experimental_streamText({
-    model: groq.chat('llama3-70b-8192'),
+    model: groq('llama3-70b-8192'),
     messages,
   });
 

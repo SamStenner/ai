@@ -12,7 +12,7 @@ const fireworks = createOpenAI({
   apiKey: process.env.FIREWORKS_API_KEY ?? '',
   baseURL: 'https://api.fireworks.ai/inference/v1',
   models: {
-    "accounts/fireworks/models/firefunction-v1": 100,
+    'accounts/fireworks/models/firefunction-v1': 100,
   },
 });
 

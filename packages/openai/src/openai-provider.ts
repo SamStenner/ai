@@ -7,7 +7,7 @@ import {
 } from './openai-completion-settings';
 import { OpenAI } from './openai-facade';
 
-export type CustomModel<T extends string> = Record<T, number>
+export type CustomModel<T extends string> = Record<T, number>;
 
 export interface OpenAIProvider<T extends string> {
   (
@@ -64,7 +64,7 @@ Custom headers to include in the requests.
   /**
 Custom models to include in the provider.
    */
-  models?: CustomModel<T>
+  models?: CustomModel<T>;
 }
 
 /**
@@ -76,7 +76,10 @@ export function createOpenAI<CustomChatModelId extends string = never>(
   const openai = new OpenAI<CustomChatModelId>(options);
 
   const provider = function (
-    modelId: OpenAIChatModelId | OpenAICompletionModelId | (keyof typeof openai.customModelIds),
+    modelId:
+      | OpenAIChatModelId
+      | OpenAICompletionModelId
+      | keyof typeof openai.customModelIds,
     settings?: OpenAIChatSettings | OpenAICompletionSettings,
   ) {
     if (new.target) {

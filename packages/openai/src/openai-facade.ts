@@ -55,7 +55,7 @@ Custom models to include in the provider.
     this.organization = options.organization;
     this.project = options.project;
     this.headers = options.headers;
-    this.customModelIds = options.models ??  {} as CustomModel<CustomModelId>;
+    this.customModelIds = options.models ?? ({} as CustomModel<CustomModelId>);
   }
 
   private get baseConfig() {
@@ -75,20 +75,33 @@ Custom models to include in the provider.
     };
   }
 
-  chat(modelId: OpenAIChatModelId | CustomModelId, settings: OpenAIChatSettings = {}) {
-    return new OpenAIChatLanguageModel(modelId, settings, {
-      provider: 'openai.chat',
-      ...this.baseConfig,
-    }, this.customModelIds[modelId as CustomModelId]);
+  chat(
+    modelId: OpenAIChatModelId | CustomModelId,
+    settings: OpenAIChatSettings = {},
+  ) {
+    return new OpenAIChatLanguageModel(
+      modelId,
+      settings,
+      {
+        provider: 'openai.chat',
+        ...this.baseConfig,
+      },
+      this.customModelIds,
+    );
   }
 
   completion(
     modelId: OpenAICompletionModelId | CustomModelId,
     settings: OpenAICompletionSettings = {},
   ) {
-    return new OpenAICompletionLanguageModel(modelId, settings, {
-      provider: 'openai.completion',
-      ...this.baseConfig,
-    }, this.customModelIds[modelId as CustomModelId]);
+    return new OpenAICompletionLanguageModel(
+      modelId,
+      settings,
+      {
+        provider: 'openai.completion',
+        ...this.baseConfig,
+      },
+      this.customModelIds,
+    );
   }
 }

@@ -21,6 +21,7 @@ import {
 } from './openai-completion-settings';
 import { openaiFailedResponseHandler } from './openai-error';
 import { mapOpenAICompletionLogProbs } from './map-openai-completion-logprobs';
+import { CustomModel } from './openai-provider';
 
 type OpenAICompletionConfig = {
   provider: string;
@@ -28,13 +29,16 @@ type OpenAICompletionConfig = {
   headers: () => Record<string, string | undefined>;
 };
 
-export class OpenAICompletionLanguageModel<CustomCompletionModelId extends string> implements LanguageModelV1 {
+export class OpenAICompletionLanguageModel<
+  CustomCompletionModelId extends string,
+> implements LanguageModelV1
+{
   readonly specificationVersion = 'v1';
   readonly defaultObjectGenerationMode = undefined;
 
-  readonly modelId: OpenAICompletionModelId | CustomCompletionModelId
+  readonly modelId: OpenAICompletionModelId | CustomCompletionModelId;
   readonly settings: OpenAICompletionSettings;
-  readonly maxTokens: number | undefined;
+  readonly contextWindowSize: number;
 
   private readonly config: OpenAICompletionConfig;
 
@@ -42,12 +46,14 @@ export class OpenAICompletionLanguageModel<CustomCompletionModelId extends strin
     modelId: OpenAICompletionModelId | CustomCompletionModelId,
     settings: OpenAICompletionSettings,
     config: OpenAICompletionConfig,
-    maxTokens: number,
+    customModels: CustomModel<CustomCompletionModelId>,
   ) {
     this.modelId = modelId as OpenAICompletionModelId | CustomCompletionModelId;
     this.settings = settings;
     this.config = config;
-    this.maxTokens = openAiCompletionModelTokens[modelId] ?? maxTokens
+    this.contextWindowSize =
+      customModels[modelId as CustomCompletionModelId] ??
+      openAiCompletionModelTokens[modelId as OpenAICompletionModelId];
   }
 
   get provider(): string {
