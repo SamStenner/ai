@@ -17,6 +17,7 @@ import { anthropicFailedResponseHandler } from './anthropic-error';
 import {
   AnthropicMessagesModelId,
   AnthropicMessagesSettings,
+  anthropicMessagesModelTokens,
 } from './anthropic-messages-settings';
 import { convertToAnthropicMessagesPrompt } from './convert-to-anthropic-messages-prompt';
 import { mapAnthropicStopReason } from './map-anthropic-stop-reason';
@@ -33,6 +34,7 @@ export class AnthropicMessagesLanguageModel implements LanguageModelV1 {
 
   readonly modelId: AnthropicMessagesModelId;
   readonly settings: AnthropicMessagesSettings;
+  readonly maxTokens: number | undefined;
 
   private readonly config: AnthropicMessagesConfig;
 
@@ -44,6 +46,7 @@ export class AnthropicMessagesLanguageModel implements LanguageModelV1 {
     this.modelId = modelId;
     this.settings = settings;
     this.config = config;
+    this.maxTokens = anthropicMessagesModelTokens[modelId];
   }
 
   get provider(): string {

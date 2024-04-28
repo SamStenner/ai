@@ -7,28 +7,30 @@ import {
 } from './openai-completion-settings';
 import { OpenAI } from './openai-facade';
 
-export interface OpenAIProvider {
+export type CustomModel<T extends string> = Record<T, number>
+
+export interface OpenAIProvider<T extends string> {
   (
-    modelId: 'gpt-3.5-turbo-instruct',
+    modelId: 'gpt-3.5-turbo-instruct' | T,
     settings?: OpenAICompletionSettings,
-  ): OpenAICompletionLanguageModel;
+  ): OpenAICompletionLanguageModel<T>;
   (
-    modelId: OpenAIChatModelId,
+    modelId: OpenAIChatModelId | T,
     settings?: OpenAIChatSettings,
-  ): OpenAIChatLanguageModel;
+  ): OpenAIChatLanguageModel<T>;
 
   chat(
-    modelId: OpenAIChatModelId,
+    modelId: OpenAIChatModelId | T,
     settings?: OpenAIChatSettings,
-  ): OpenAIChatLanguageModel;
+  ): OpenAIChatLanguageModel<T>;
 
   completion(
-    modelId: OpenAICompletionModelId,
+    modelId: OpenAICompletionModelId | T,
     settings?: OpenAICompletionSettings,
-  ): OpenAICompletionLanguageModel;
+  ): OpenAICompletionLanguageModel<T>;
 }
 
-export interface OpenAIProviderSettings {
+export interface OpenAIProviderSettings<T extends string> {
   /**
 Base URL for the OpenAI API calls.
      */
@@ -58,18 +60,23 @@ OpenAI project.
 Custom headers to include in the requests.
      */
   headers?: Record<string, string>;
+
+  /**
+Custom models to include in the provider.
+   */
+  models?: CustomModel<T>
 }
 
 /**
 Create an OpenAI provider instance.
  */
-export function createOpenAI(
-  options: OpenAIProviderSettings = {},
-): OpenAIProvider {
-  const openai = new OpenAI(options);
+export function createOpenAI<CustomChatModelId extends string = never>(
+  options: OpenAIProviderSettings<CustomChatModelId> = {},
+): OpenAIProvider<CustomChatModelId> {
+  const openai = new OpenAI<CustomChatModelId>(options);
 
   const provider = function (
-    modelId: OpenAIChatModelId | OpenAICompletionModelId,
+    modelId: OpenAIChatModelId | OpenAICompletionModelId | (keyof typeof openai.customModelIds),
     settings?: OpenAIChatSettings | OpenAICompletionSettings,
   ) {
     if (new.target) {
@@ -77,7 +84,6 @@ export function createOpenAI(
         'The OpenAI model function cannot be called with the new keyword.',
       );
     }
-
     if (modelId === 'gpt-3.5-turbo-instruct') {
       return openai.completion(modelId, settings as OpenAICompletionSettings);
     } else {
@@ -87,8 +93,7 @@ export function createOpenAI(
 
   provider.chat = openai.chat.bind(openai);
   provider.completion = openai.completion.bind(openai);
-
-  return provider as OpenAIProvider;
+  return provider as OpenAIProvider<CustomChatModelId>;
 }
 
 /**

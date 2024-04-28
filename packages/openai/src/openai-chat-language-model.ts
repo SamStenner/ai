@@ -17,9 +17,10 @@ import {
 import { z } from 'zod';
 import { convertToOpenAIChatMessages } from './convert-to-openai-chat-messages';
 import { mapOpenAIFinishReason } from './map-openai-finish-reason';
-import { OpenAIChatModelId, OpenAIChatSettings } from './openai-chat-settings';
+import { OpenAIChatModelId, OpenAIChatSettings, openAiChatModelTokens } from './openai-chat-settings';
 import { openaiFailedResponseHandler } from './openai-error';
 import { mapOpenAIChatLogProbsOutput } from './map-openai-chat-logprobs';
+import { CustomModel } from './openai-provider';
 
 type OpenAIChatConfig = {
   provider: string;
@@ -27,23 +28,26 @@ type OpenAIChatConfig = {
   headers: () => Record<string, string | undefined>;
 };
 
-export class OpenAIChatLanguageModel implements LanguageModelV1 {
+export class OpenAIChatLanguageModel<CustomChatModelId extends string> implements LanguageModelV1 {
   readonly specificationVersion = 'v1';
   readonly defaultObjectGenerationMode = 'tool';
 
-  readonly modelId: OpenAIChatModelId;
+  readonly modelId: OpenAIChatModelId | CustomChatModelId;
   readonly settings: OpenAIChatSettings;
+  readonly maxTokens: number | undefined;
 
   private readonly config: OpenAIChatConfig;
 
   constructor(
-    modelId: OpenAIChatModelId,
+    modelId: OpenAIChatModelId | CustomChatModelId,
     settings: OpenAIChatSettings,
     config: OpenAIChatConfig,
+    maxTokens?: number,
   ) {
-    this.modelId = modelId;
+    this.modelId = modelId
     this.settings = settings;
     this.config = config;
+    this.maxTokens = maxTokens ?? openAiChatModelTokens[modelId]
   }
 
   get provider(): string {

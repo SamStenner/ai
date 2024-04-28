@@ -6,6 +6,9 @@ export const dynamic = 'force-dynamic';
 const fireworks = createOpenAI({
   apiKey: process.env.FIREWORKS_API_KEY ?? '',
   baseURL: 'https://api.fireworks.ai/inference/v1',
+  models: {
+    'accounts/fireworks/models/llama-v2-70b-chat': 100,
+  }
 });
 
 export async function POST(req: Request) {

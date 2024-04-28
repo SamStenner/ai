@@ -15,3 +15,12 @@ Models running with nucleus sampling don't allow topK setting.
    */
   topK?: number;
 }
+
+/**
+ * Tokens allowed for each model.
+ */
+export const googleGenerativeAIModelTokens: Record<GoogleGenerativeAIModelId, number | undefined> = {
+  'models/gemini-1.5-pro-latest': 4096,
+  'models/gemini-pro': 4096,
+  'models/gemini-pro-vision': 4096,
+};

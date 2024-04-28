@@ -6,6 +6,9 @@ export const dynamic = 'force-dynamic';
 const groq = createOpenAI({
   apiKey: process.env.GROQ_API_KEY ?? '',
   baseURL: 'https://api.groq.com/openai/v1',
+  models: {
+    'llama3-70b-8192': 100,
+  }
 });
 
 export async function POST(req: Request) {

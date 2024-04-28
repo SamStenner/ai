@@ -1,5 +1,5 @@
 // https://platform.openai.com/docs/models
-export type OpenAICompletionModelId = 'gpt-3.5-turbo-instruct' | (string & {});
+export type OpenAICompletionModelId = 'gpt-3.5-turbo-instruct';
 
 export interface OpenAICompletionSettings {
   /**
@@ -46,4 +46,8 @@ A unique identifier representing your end-user, which can help OpenAI to
 monitor and detect abuse. Learn more.
    */
   user?: string;
+}
+
+export const openAiCompletionModelTokens: Record<OpenAICompletionModelId, number | undefined> = {
+  'gpt-3.5-turbo-instruct': 4096,
 }

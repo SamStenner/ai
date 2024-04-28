@@ -2,19 +2,21 @@ import { InvalidPromptError } from '@ai-sdk/provider';
 import { ExperimentalMessage } from './message';
 import { Prompt } from './prompt';
 
-export type ValidatedPrompt =
-  | {
-      type: 'prompt';
-      prompt: string;
-      messages: undefined;
-      system?: string;
-    }
-  | {
-      type: 'messages';
-      prompt: undefined;
-      messages: ExperimentalMessage[];
-      system?: string;
-    };
+export type PromptValidatedPrompt = {
+  type: 'prompt';
+  prompt: string;
+  messages: undefined;
+  system?: string;
+};
+
+export type MessageValidatedPrompt = {
+  type: 'messages';
+  prompt: undefined;
+  messages: ExperimentalMessage[];
+  system?: string;
+};
+
+export type ValidatedPrompt = PromptValidatedPrompt | MessageValidatedPrompt;
 
 export function getValidatedPrompt(prompt: Prompt): ValidatedPrompt {
   if (prompt.prompt == null && prompt.messages == null) {

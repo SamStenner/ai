@@ -18,6 +18,7 @@ import { GoogleGenerativeAIContentPart } from './google-generative-ai-prompt';
 import {
   GoogleGenerativeAIModelId,
   GoogleGenerativeAISettings,
+  googleGenerativeAIModelTokens,
 } from './google-generative-ai-settings';
 import { mapGoogleGenerativeAIFinishReason } from './map-google-generative-ai-finish-reason';
 
@@ -34,6 +35,7 @@ export class GoogleGenerativeAILanguageModel implements LanguageModelV1 {
 
   readonly modelId: GoogleGenerativeAIModelId;
   readonly settings: GoogleGenerativeAISettings;
+  readonly maxTokens: number | undefined;
 
   private readonly config: GoogleGenerativeAIConfig;
 
@@ -45,6 +47,7 @@ export class GoogleGenerativeAILanguageModel implements LanguageModelV1 {
     this.modelId = modelId;
     this.settings = settings;
     this.config = config;
+    this.maxTokens = googleGenerativeAIModelTokens[modelId];
   }
 
   get provider(): string {

@@ -1,4 +1,4 @@
-import { createOpenAI } from '@ai-sdk/openai';
+import { OpenAI, createOpenAI } from '@ai-sdk/openai';
 import { StreamingTextResponse, experimental_streamText } from 'ai';
 
 export const dynamic = 'force-dynamic';
@@ -6,6 +6,9 @@ export const dynamic = 'force-dynamic';
 const perplexity = createOpenAI({
   apiKey: process.env.PERPLEXITY_API_KEY ?? '',
   baseURL: 'https://api.perplexity.ai/',
+  models: {
+    'sonar-medium-chat': 100,
+  }
 });
 
 export async function POST(req: Request) {

@@ -15,6 +15,8 @@ import { retryWithExponentialBackoff } from '../util/retry-with-exponential-back
 import { TokenUsage, calculateTokenUsage } from './token-usage';
 import { ToToolCallArray, parseToolCall } from './tool-call';
 import { ToToolResultArray } from './tool-result';
+import { ContextWindowHandler } from '../context/context-window-handler';
+import { getSizedPrompt } from '../context/get-sized-prompt';
 
 /**
 Generate a text and call tools for a given prompt using a language model.
@@ -60,6 +62,7 @@ export async function experimental_generateText<
   messages,
   maxRetries,
   abortSignal,
+  contextHandler,
   ...settings
 }: CallSettings &
   Prompt & {
@@ -72,9 +75,14 @@ The language model to use.
 The tools that the model can call. The model needs to support calling tools.
 */
     tools?: TOOLS;
+
+    contextHandler?: ContextWindowHandler;
   }): Promise<GenerateTextResult<TOOLS>> {
   const retry = retryWithExponentialBackoff({ maxRetries });
-  const validatedPrompt = getValidatedPrompt({ system, prompt, messages });
+  let validatedPrompt = getValidatedPrompt({ system, prompt, messages });
+  if (contextHandler) {
+    validatedPrompt = await getSizedPrompt(validatedPrompt, contextHandler, model.maxTokens);
+  }
   const modelResponse = await retry(() => {
     return model.doGenerate({
       mode: {

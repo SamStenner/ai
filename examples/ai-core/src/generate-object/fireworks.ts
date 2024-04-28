@@ -1,3 +1,5 @@
+import { createAnthropic } from '@ai-sdk/anthropic';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { mistral } from '@ai-sdk/mistral';
 import { createOpenAI } from '@ai-sdk/openai';
 import { experimental_generateObject } from 'ai';
@@ -9,6 +11,9 @@ dotenv.config();
 const fireworks = createOpenAI({
   apiKey: process.env.FIREWORKS_API_KEY ?? '',
   baseURL: 'https://api.fireworks.ai/inference/v1',
+  models: {
+    "accounts/fireworks/models/firefunction-v1": 100,
+  },
 });
 
 async function main() {

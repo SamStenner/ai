@@ -17,6 +17,7 @@ import { mapOpenAIFinishReason } from './map-openai-finish-reason';
 import {
   OpenAICompletionModelId,
   OpenAICompletionSettings,
+  openAiCompletionModelTokens,
 } from './openai-completion-settings';
 import { openaiFailedResponseHandler } from './openai-error';
 import { mapOpenAICompletionLogProbs } from './map-openai-completion-logprobs';
@@ -27,23 +28,26 @@ type OpenAICompletionConfig = {
   headers: () => Record<string, string | undefined>;
 };
 
-export class OpenAICompletionLanguageModel implements LanguageModelV1 {
+export class OpenAICompletionLanguageModel<CustomCompletionModelId extends string> implements LanguageModelV1 {
   readonly specificationVersion = 'v1';
   readonly defaultObjectGenerationMode = undefined;
 
-  readonly modelId: OpenAICompletionModelId;
+  readonly modelId: OpenAICompletionModelId | CustomCompletionModelId
   readonly settings: OpenAICompletionSettings;
+  readonly maxTokens: number | undefined;
 
   private readonly config: OpenAICompletionConfig;
 
   constructor(
-    modelId: OpenAICompletionModelId,
+    modelId: OpenAICompletionModelId | CustomCompletionModelId,
     settings: OpenAICompletionSettings,
     config: OpenAICompletionConfig,
+    maxTokens: number,
   ) {
-    this.modelId = modelId;
+    this.modelId = modelId as OpenAICompletionModelId | CustomCompletionModelId;
     this.settings = settings;
     this.config = config;
+    this.maxTokens = openAiCompletionModelTokens[modelId] ?? maxTokens
   }
 
   get provider(): string {

@@ -15,3 +15,14 @@ Defaults to `false`.
    */
   safePrompt?: boolean;
 }
+
+/**
+ * Tokens allowed for each model.
+ */
+export const mistralChatModelTokens: Record<MistralChatModelId, number | undefined> = {
+  "open-mistral-7b": 0,
+  "open-mixtral-8x7b": 0,
+  "mistral-small-latest": 0,
+  "mistral-medium-latest": 0,
+  "mistral-large-latest": 0
+}
